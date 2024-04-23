@@ -46,7 +46,7 @@
 <body>
 
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-        <a class="navbar-brand" href="\">AHP</a>
+        <a class="navbar-brand" href="\">SCA</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>

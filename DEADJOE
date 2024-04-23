@@ -1,0 +1,19 @@
+
+*** These modified files were found in JOE when it aborted on Mon Apr 22 09:17:54 2024
+*** JOE was aborted by UNIX signal 1
+
+*** File '(Unnamed)'
+php_pdo_my
+pdo
+
+*** File '(Unnamed)'
+.env
+.env
+/etc/php.ini
+/etc/php.ini
+
+*** File '* Startup Log *'
+Processing '/etc/joe/joerc'...
+Processing '/etc/joe/ftyperc'...
+Finished processing /etc/joe/ftyperc
+Finished processing /etc/joe/joerc

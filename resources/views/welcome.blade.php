@@ -31,11 +31,11 @@
 @stop
 
 @section('conteudo')
-<h3>AHP - Tomada de Decisões</h3>
-<p>AHP (Analytic Hierarchy Process)</p>
-<p> Um dos métodos multicritério mais utilizados, Criado pelo Professor Thomas L. Saaty em 1980;</p>
-<p> Permite o uso de critérios qualitativos bem como quantitativos no processo de avaliação. </p>
-<p>A ideia principal é dividir o problema de decisão em níveis hierárquicos, facilitando, assim, sua compreensão e avaliação.</p>
+<h3>SCA - Strategic Choice Approach</h3>
+<p> SCA was developed by John Kimball Friend and Allen Hickling and described in details in the Planning Under Pressure (2005) book;</p>
+<p> SCA is a problem structuring method centered on the management of uncertainty and commitment in strategic situations, </p>
+<p> where strategic refers to the advisability of considering particular decisions in the context of others.</p>
+<p> SCA-Web is a web-based software to facilitate the use of the SCA..</p>
 
 <!-- <div class="container">
 	<div class="row">
