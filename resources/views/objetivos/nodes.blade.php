@@ -33,32 +33,29 @@
 @section ('conteudo')
 <!-- {{ $x = 0 }}  -->
 <div>
-
-
-
+	<a class="btn btn-primary my-2" href="{{ route('project.formCreateProject') }}">New Project</a>
 	<table class="table table-bordered table-striped table-hover">
 		<thead>
 			<tr>
 				<th>#</th>
-				<th>Decision Problems</th>
-				<th>View</th>
+				<th>Projects</th>
 				<th>Operations</th>
+				<th>Others</th>
 			</tr>
 		</thead>
 		<tbody>
-			@foreach($objectives as $o)
-
+			@foreach($projects as $o)
 			<tr>
 				<td>{{ ++$x }}</td>
 				<td>
-					{{ $o['descr'] }}
+					{{ $o['name'] }}
 				</td>
 				<td>
 					<div class="btn-group">
 						<a href="/nodes/{{ $o['id'] }}/criteria" class="btn btn-sm btn-primary" data-toggle="tooltip" title="">Shape</a>
-						&nbsp;<a href="/nodes/{{ $o['id'] }}/alternatives" class="btn btn-sm btn-primary" data-toggle="tooltip" title="teste">Design</a>
-						&nbsp;<a href="/nodes/{{ $o['id'] }}/alternatives" class="btn btn-sm btn-primary" data-toggle="tooltip" title="teste">Compare</a>
-						&nbsp;<a href="/nodes/{{ $o['id'] }}/alternatives" class="btn btn-sm btn-primary" data-toggle="tooltip" title="teste">Choose</a>
+						&nbsp;<a href="/nodes/{{ $o['id'] }}/alternatives" class="btn btn-sm btn-primary disabled" data-toggle="tooltip" title="teste">Design</a>
+						&nbsp;<a href="/nodes/{{ $o['id'] }}/alternatives" class="btn btn-sm btn-primary disabled" data-toggle="tooltip" title="teste">Compare</a>
+						&nbsp;<a href="/nodes/{{ $o['id'] }}/alternatives" class="btn btn-sm btn-primary disabled" data-toggle="tooltip" title="teste">Choose</a>
 					</div>
 				</td>
 
@@ -88,10 +85,7 @@
 					</div>
 				</td>
 			</tr>
-
-
 			@endforeach
-
 		</tbody>
 	</table>
 

@@ -32,22 +32,19 @@
 @section ('conteudo')
 <div class="card">
   <div class="card-header">
-    <h3>Create new {{$descr}}</h3>
+    <h3>Create new project</h3>
   </div>
   <div class="card-body">
-    <form method="POST" action="/createNode/{{$up}}">
+    <form method="POST" action="{{ route('project.createProject') }}" class="container">
         @csrf
-        <div class="form-group">
-        @for ($i = 0; $i < $nodes; $i++)
-        <label for="descricao">Name:</label>
-        <input type="text" class="form-control" placeholder="" id="descricao" name="descricao[{{$i}}]">
-        @endfor
-        <input type=hidden name="level" value={{$level}}>
-      </div>
-      <div class="btn-group">
-        <button type="submit" class="btn btn-primary">Save</button>
-        <a class="btn btn-danger" href="/nodes">Cancel</a>
-      </div>
+		<div class="form-group w-100">
+			<label for="name" class="form-label">Project's name</label>
+			<input type="text" name="name" id="name" placeholder="Project's name" class="form-text w-100 py-1">
+		</div>
+		<div class="btn-group gap-1">
+			<button type="submit" class="btn btn-primary">Save</button>
+			<a class="btn btn-danger" href="{{ route('project.index')}}">Cancel</a>
+		</div>
     </form>
   </div>
 </div>

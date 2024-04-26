@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Objetivo;
 use App\Models\Node;
 use App\Models\Judments;
+use App\Models\Project;
 use App\Models\Score;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AHPController;
@@ -15,8 +16,8 @@ class NodesController extends Controller
 
     public function index()
     {
-        $objectives = Node::get()->where('level', 0)->where('user_id',Auth::user()->id);
-        return view("objetivos.nodes")->with('objectives', $objectives);
+        $projects = Project::query()->orderBy('id')->paginate(10);
+        return view("objetivos.nodes", ['projects' => $projects]);
     }
 
     public function criteria($id)
