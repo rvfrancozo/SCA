@@ -11,6 +11,9 @@ class ProjectController extends Controller
     public function index()
     {
         $projects = Project::query()->orderBy('id')->paginate(10);
+
+        // dd($projects);
+
         return view("objetivos.nodes", ['projects' => $projects]);
     }
 
@@ -27,5 +30,12 @@ class ProjectController extends Controller
         $projects = Project::create($data);
 
         return to_route('project.index', $projects)->with('message', 'Note was created');
+    }
+
+    public function deleteProject($id) {
+        $project = Project::find($id); 
+        $project->delete();
+        
+        return to_route('project.index')->with('message', 'Note was deleted');
     }
 }

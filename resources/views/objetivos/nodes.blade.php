@@ -58,13 +58,23 @@
 						&nbsp;<a href="/nodes/{{ $o['id'] }}/alternatives" class="btn btn-sm btn-primary disabled" data-toggle="tooltip" title="teste">Choose</a>
 					</div>
 				</td>
-
 				<td>
 					<div class="btn-group">
-						<a class="btn btn-primary btn-sm" href="/nodes/{{$o->id}}/report">Report</a>
-						<button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#excluir_{{$o->id}}">Remove</button>
+						<a class="btn btn-primary btn-sm" href="#">Report</a>
+						{{-- <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#excluir_{{$o->id}}">Remove</button> --}}
+						<form action="{{ route('project.remove', $o->id) }}" method="POST">
+							@csrf
+							@method('delete')
+							<button class="btn btn-sm btn-danger">Remove</button>
+							{{-- data-toggle="modal" data-target="#excluir_{{$o->id}}" --}}
+						</form>
+
+						{{-- {{ Form::open(['method' => 'POST', 'route' => 'project.remove']) }}
+							{{ Form::hidden('id',$o->id) }}
+							{{ Form::submit('Delete') }}
+						{{ Form::close() }} --}}
 					</div>
-					<div class="modal" id="excluir_{{$o->id}}">
+					{{-- <div class="modal" id="excluir_{{$o->id}}">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -72,24 +82,20 @@
 									<button type="button" class="close" data-dismiss="modal"></button>
 								</div>
 								<div class="modal-body">
-									<strong>Decision Problem:</strong> {{$o->descr}}
+									<strong>Project:</strong> {{$o->name}}
 								</div>
 								<div class="modal-footer">
 									<div class="btn-group">
 										<button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-										<a class="btn btn-danger" href="/node/{{$o->id}}/remove">Remove</a>
+										<a class="btn btn-danger" href="/project/{{$o->id}}">Remove</a>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> --}}
 				</td>
 			</tr>
 			@endforeach
 		</tbody>
 	</table>
-
-
-
-
 	@stop
