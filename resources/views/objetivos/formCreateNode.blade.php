@@ -37,9 +37,16 @@
   <div class="card-body">
     <form method="POST" action="{{ route('project.createProject') }}" class="container">
         @csrf
-		<div class="form-group w-100">
-			<label for="name" class="form-label">Project's name</label>
-			<input type="text" name="name" id="name" placeholder="Project's name" class="form-text w-100 py-1">
+		<div class="form-group w-100 d-flex flex-column gap-4">
+			<div class="d-flex flex-column">
+				<label for="name" class="form-label">Project's name</label>
+				<input type="text" name="name" id="name" placeholder="Project's name" class="form-control">
+			</div>
+
+			<div class="d-flex flex-column">
+				<label for="description" class="form-label">Description</label>
+				<textarea id="description" name="description" rows="5" class="form-control" placeholder="Leave a comment here"> </textarea>
+			</div>
 		</div>
 		<div class="btn-group gap-1">
 			<button type="submit" class="btn btn-primary">Save</button>

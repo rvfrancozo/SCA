@@ -9,5 +9,10 @@ class Project extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'description'];
+
+    public function decisionAreas()
+    {
+        return $this->hasMany(DecisionArea::class);
+    }
 }

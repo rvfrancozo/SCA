@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DecisionAreaController;
 use App\Http\Controllers\ProjectController;
 use App\Models\Project;
 use Illuminate\Support\Facades\Route;
@@ -33,10 +34,22 @@ Route::get('/auth/google/redirect', [AuthController::class, 'googleredirect'])->
 Route::get('/auth/google/callback', [AuthController::class, 'googlecallback']);
 
 // SCA routes
-Route::get('/home', [ProjectController::class, 'index'])->name('project.index');
-Route::get('/formCreateProject', [ProjectController::class, 'formCreateProject'])->name('project.formCreateProject');
-Route::post('/project', [ProjectController::class, 'createProject'])->name('project.createProject');
-Route::delete('/project/{id}/remove', [ProjectController::class, 'deleteProject'])->name('project.remove');
+    // project
+        Route::get('/home', [ProjectController::class, 'index'])->name('project.index');
+        Route::get('/formCreateProject', [ProjectController::class, 'formCreateProject'])->name('project.formCreateProject');
+        Route::post('/project', [ProjectController::class, 'createProject'])->name('project.createProject');
+        Route::delete('/project/{id}/remove', [ProjectController::class, 'deleteProject'])->name('project.remove');
+
+    // decision areas
+        Route::get('/projects/{project_id}/das', [DecisionAreaController::class, 'index'])->name('da.index');
+        Route::get('/projects/da/formCreate', [DecisionAreaController::class, 'formCreateDA'])->name('da.formCreate');
+        Route::get('/projects/da/{da}/formEdit', [DecisionAreaController::class, 'formEditDA'])->name('da.formEdit');
+        Route::post('/projects/da/create', [DecisionAreaController::class, 'createDA'])->name('da.create');
+        Route::put('/projects/da/{da}', [DecisionAreaController::class, 'editDA'])->name('da.edit');
+        Route::delete('/projects/da/{da}/delete', [DecisionAreaController::class, 'deleteDA'])->name('da.delete');
+        Route::get('/projects/{project_id}/das/formPreConnect', [DecisionAreaController::class, 'formPreConnectDA'])->name('da.formPreConnect');
+        Route::get('/projects/{project_id}/das/{da}/formConnect', [DecisionAreaController::class, 'formConnectDA'])->name('da.formConnect');
+        Route::post('projects/das/connect', [DecisionAreaController::class, 'connect'])->name('da.connect');
 
 // Route::get('/AHP', [AHPController::class, 'AHP']);
 
