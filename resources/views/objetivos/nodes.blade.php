@@ -39,6 +39,7 @@
 			<tr>
 				<th>#</th>
 				<th>Projects</th>
+				<th>Description</th>
 				<th>Operations</th>
 				<th>Others</th>
 			</tr>
@@ -51,8 +52,12 @@
 					{{ $o['name'] }}
 				</td>
 				<td>
+					{{ substr($o['description'], 0, 30) }}...
+					{{-- Add view complete description --}}
+				</td>
+				<td>
 					<div class="btn-group">
-						<a href="/nodes/{{ $o['id'] }}/criteria" class="btn btn-sm btn-primary" data-toggle="tooltip" title="">Shape</a>
+						<a href="{{ route('da.index', ['project_id' => $o['id']]) }}" class="btn btn-sm btn-primary" data-toggle="tooltip" title="">Shape</a>
 						&nbsp;<a href="/nodes/{{ $o['id'] }}/alternatives" class="btn btn-sm btn-primary disabled" data-toggle="tooltip" title="teste">Design</a>
 						&nbsp;<a href="/nodes/{{ $o['id'] }}/alternatives" class="btn btn-sm btn-primary disabled" data-toggle="tooltip" title="teste">Compare</a>
 						&nbsp;<a href="/nodes/{{ $o['id'] }}/alternatives" class="btn btn-sm btn-primary disabled" data-toggle="tooltip" title="teste">Choose</a>

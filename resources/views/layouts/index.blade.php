@@ -99,7 +99,7 @@
     </nav>
     <br>
 
-    <div class="container" style="margin-top:80px">
+    <div class="container" style="margin-top:20px">
         @yield('conteudo')
     </div>
 

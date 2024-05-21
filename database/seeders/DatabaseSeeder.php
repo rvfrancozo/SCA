@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\DecisionArea;
 use App\Models\Project;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -19,6 +20,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 		Project::factory(2)->create();
+		DecisionArea::factory(2)->create();
 
         DB::table('users')->insert([
             ['name' => 'Administrador', 

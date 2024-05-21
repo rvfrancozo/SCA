@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Project>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\DecisionProblem>
  */
-class ProjectFactory extends Factory
+class DecisionProblemsFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -16,10 +16,8 @@ class ProjectFactory extends Factory
      */
     public function definition()
     {
-        static $num = 1;
         return [
-            'name' => "Project ".str($num++)->trim()->toString(),
-            'description' => fake()->realText(200)
+            //
         ];
     }
 }

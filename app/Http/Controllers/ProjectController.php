@@ -18,18 +18,18 @@ class ProjectController extends Controller
     }
 
     public function formCreateProject() {
-        $project = Project::query()->orderBy('id')->paginate(10);
-        return view('objetivos.formCreateNode', ['project' => $project]);
+        return view('objetivos.formCreateNode');
     }
 
     public function createProject(Request $request) {
         $data = $request->validate([
             'name' => ['required', 'string'],
+            'description' => ['required', 'string'],
         ]);
 
         $projects = Project::create($data);
 
-        return to_route('project.index', $projects)->with('message', 'Note was created');
+        return to_route('project.index', $projects)->with('message', 'Project was created');
     }
 
     public function deleteProject($id) {
@@ -39,3 +39,4 @@ class ProjectController extends Controller
         return to_route('project.index')->with('message', 'Note was deleted');
     }
 }
+    
