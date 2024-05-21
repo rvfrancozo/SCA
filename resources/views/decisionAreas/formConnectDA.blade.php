@@ -62,13 +62,23 @@
         </section>
         <h1>{{ $da }}</h1>
     </div> --}}
-    <!-- resources/views/decisionAreas/formConnectDA.blade.php -->
     <div class="btn-group col-1 my-4 -ml-3">
         <a href="{{ route('da.index', ['project_id' => $project_id]) }}" class="btn btn-primary d-flex gap-2 p-3">
             <b>&#10554;</b>
             Back
         </a> 
     </div>
+
+    @if (session('message'))
+    <div class="alert alert-success">
+        {{ session('message') }}
+    </div>
+    @endif
+    @if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+    @endif
     <div class="d-flex gap-2">
         <main class="col-6 border border-black p-0 card">
             <div class="card-header">
@@ -90,7 +100,7 @@
                     @csrf
                     <input type="hidden" name="decision_area_id_1" value="{{ $da->id }}">
                     <input type="hidden" name="project_id" value="{{ $project_id }}">
-                    @foreach ($decisionAreas as $da)
+                    @foreach ($availableDecisionAreas as $da)
                         <li class="w-100 d-flex align-items-baseline justify-content-between btn-group" role="group" aria-label="Basic checkbox toggle button group">
                             <input type="checkbox" class="btn-check" id="btncheck{{ $da->id }}" name="decision_area_id_2" value="{{ $da->id }}" autocomplete="off">
                             <label class="btn btn-outline-primary" for="btncheck{{ $da->id }}">{{ $da->label }}</label>
@@ -101,5 +111,4 @@
             </ul>
         </section>
     </div>
-    
 @stop

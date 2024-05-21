@@ -42,11 +42,11 @@ Route::get('/auth/google/callback', [AuthController::class, 'googlecallback']);
 
     // decision areas
         Route::get('/projects/{project_id}/das', [DecisionAreaController::class, 'index'])->name('da.index');
-        Route::get('/projects/da/formCreate', [DecisionAreaController::class, 'formCreateDA'])->name('da.formCreate');
-        Route::get('/projects/da/{da}/formEdit', [DecisionAreaController::class, 'formEditDA'])->name('da.formEdit');
-        Route::post('/projects/da/create', [DecisionAreaController::class, 'createDA'])->name('da.create');
-        Route::put('/projects/da/{da}', [DecisionAreaController::class, 'editDA'])->name('da.edit');
-        Route::delete('/projects/da/{da}/delete', [DecisionAreaController::class, 'deleteDA'])->name('da.delete');
+        Route::get('/projects/{project_id}/das/formCreate', [DecisionAreaController::class, 'formCreateDA'])->name('da.formCreate');
+        Route::get('/projects/{project_id}/das/{da}/formEdit', [DecisionAreaController::class, 'formEditDA'])->name('da.formEdit');
+        Route::post('/projects/{project_id}/create', [DecisionAreaController::class, 'createDA'])->name('da.create');
+        Route::put('/projects/{project_id}/{da}', [DecisionAreaController::class, 'editDA'])->name('da.edit');
+        Route::delete('/projects/{project_id}/{da}/delete', [DecisionAreaController::class, 'deleteDA'])->name('da.delete');
         Route::get('/projects/{project_id}/das/formPreConnect', [DecisionAreaController::class, 'formPreConnectDA'])->name('da.formPreConnect');
         Route::get('/projects/{project_id}/das/{da}/formConnect', [DecisionAreaController::class, 'formConnectDA'])->name('da.formConnect');
         Route::post('projects/das/connect', [DecisionAreaController::class, 'connect'])->name('da.connect');

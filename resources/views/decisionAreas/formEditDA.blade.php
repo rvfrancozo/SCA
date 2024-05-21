@@ -30,7 +30,7 @@
 
 @section ('conteudo')
     <div class="btn-group col-1 my-4 -ml-3">
-        <a href="{{ route('da.index') }}" class="btn btn-primary d-flex gap-2 p-3">
+        <a href="{{ route('da.index', ['project_id' => $project_id]) }}" class="btn btn-primary d-flex gap-2 p-3">
             <b>&#10554;</b>
             Back
         </a> 
@@ -40,7 +40,7 @@
             <div class="card-header">
                 <h3 class="m-0">ADD DECISION AREA</h3>
             </div>
-            <form action="{{ route('da.edit', $da->id) }}" method="POST" class="card-body d-flex flex-column align-items-center">
+            <form action="{{ route('da.edit', ['project_id' => $project_id, 'da' => $da]) }}" method="POST" class="card-body d-flex flex-column align-items-center">
                 @csrf
                 @method('PUT')
                 @if ($errors->any())
@@ -91,8 +91,8 @@
                         <h4>{{ $da->label }}</h4>
 
                         <div class="btn-group">
-                            <a href="{{ route('da.formEdit', $da->id) }}" class="btn btn-primary">View</a>
-                            <form action="{{ route('da.delete', $da->id) }}" method="POST">
+                            <a href="{{ route('da.formEdit',  ['project_id' => $project_id, 'da' => $da]) }}" class="btn btn-primary">View</a>
+                            <form action="{{ route('da.delete', ['project_id' => $project_id, 'da' => $da]) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button  class="btn btn-danger">Remove</button>

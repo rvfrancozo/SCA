@@ -45,15 +45,6 @@
                     <li class="w-100 d-flex align-items-baseline justify-content-between btn-group" role="group" aria-label="Basic checkbox toggle button group">
                         <input type="checkbox" class="btn-check" id="btncheck{{ $da->id }}" autocomplete="off">
                         <a class="btn btn-outline-primary text-center" href="{{ route('da.formConnect', ['project_id' => $project_id, 'da' => $da]) }}"><label class="m-0" for="btncheck{{ $da->id }}">{{ $da->label }}</label></a>
-
-                        {{-- <div class="btn-group">
-                            <a href="{{ route('da.formEdit', $da->id) }}" class="btn btn-primary">View</a>
-                            <form action="{{ route('da.delete', $da->id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button  class="btn btn-danger">Remove</button>
-                            </form>
-                        </div> --}}
                     </li>
                 @endforeach
             </ul>
