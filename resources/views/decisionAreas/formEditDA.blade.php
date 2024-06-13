@@ -29,7 +29,7 @@
 @stop
 
 @section ('conteudo')
-    <div class="btn-group col-1 my-4 -ml-3">
+    <div class="btn-group my-2">
         <a href="{{ route('da.index', ['project_id' => $project_id]) }}" class="btn btn-primary d-flex gap-2 p-3">
             <b>&#10554;</b>
             Back
@@ -88,10 +88,16 @@
             <ul class="fa-ul list-unstyled d-flex flex-column gap-2 px-2 m-0 p-2 px-4">
                 @foreach ($decisionAreas as $da)
                     <li class="w-100 d-flex align-items-baseline justify-content-between">
-                        <h4>{{ $da->label }}</h4>
+                        <h4>
+                            {{ $da->label }}
+                            @if ($da->isFocused)
+                                <span class="badge rounded-pill text-bg-secondary">New</span>
+                            @endif
+                        </h4>
 
                         <div class="btn-group">
-                            <a href="{{ route('da.formEdit',  ['project_id' => $project_id, 'da' => $da]) }}" class="btn btn-primary">View</a>
+                            <a href="{{ route('da.formConnect', ['project_id' => $project_id, 'da' => $da]) }}" class="btn btn-secondary">Connect</a>
+                            <a href="{{ route('da.formEdit',  ['project_id' => $project_id, 'da' => $da]) }}" class="btn btn-primary">Edit</a>
                             <form action="{{ route('da.delete', ['project_id' => $project_id, 'da' => $da]) }}" method="POST">
                                 @csrf
                                 @method('DELETE')

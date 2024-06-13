@@ -8,14 +8,10 @@ use App\Models\DecisionAreaConnection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class DecisionAreaController extends Controller
-{
-    //
+class DecisionAreaController extends Controller {
     public function index(Request $request) {
         $project_id = $request->project_id;
-
         $decisionAreas = DecisionArea::where('project_id', $project_id)->get();
-
         $connections = DB::table('decision_area_connections')
             ->where('project_id', $project_id)
             ->get();
@@ -63,8 +59,9 @@ class DecisionAreaController extends Controller
         return view('decisionAreas.index', compact('decisionAreas', 'daConnections', 'project_id'));
     }
 
-    public function formCreateDA($project_id) {
-        $das = DecisionArea::query()->orderBy('id')->paginate();
+    public function formCreateDA(Request $request) {
+        $project_id = $request->project_id;
+        $das = DecisionArea::where('project_id', $project_id)->get();
 
         return view("decisionAreas.formCreateDA", compact('das', 'project_id'));
     }
@@ -88,7 +85,7 @@ class DecisionAreaController extends Controller
         $data['$project_id'] = $project_id;
         $da = DecisionArea::create($data);
 
-        return redirect()->route('da.formCreate', $project_id)->with('message', 'Decision Area was created');
+        return redirect()->route('da.index', $project_id)->with('message', 'Decision Area was created');
     }
 
     public function editDA(Request $request, $project_id, DecisionArea $da) {
@@ -107,10 +104,9 @@ class DecisionAreaController extends Controller
     }
 
     public function deleteDA($project_id, DecisionArea $da) {
-        $da->DecisionArea::delete();
         $da->delete();
         
-        return redirect()->route('da.formCreate', $project_id)->with('message', 'Decision Area was deleted');
+        return redirect()->route('da.index', ['project_id' => $project_id, 'da' => $da])->with('message', 'Decision Area was deleted');
     }
 
     public function formPreConnectDA($project_id) {
@@ -138,39 +134,67 @@ class DecisionAreaController extends Controller
         return view('decisionAreas.formConnectDA', compact('da', 'availableDecisionAreas', 'project_id'));
     }
 
+    public function showConnections(Request $request) {
+        $project_id = $request->project_id;
+        $decisionAreas = DecisionArea::where('project_id', $project_id)->get();
+        $connections = DB::table('decision_area_connections')
+            ->where('project_id', $project_id)
+            ->get();
+
+        $daConnections = [];
+        foreach ($decisionAreas as $da) {
+            $filteredConnections = $connections->filter(function($conn) use ($da) {
+                return $conn->decision_area_id_1 == $da->id || $conn->decision_area_id_2 == $da->id;
+            })->map(function($conn) use ($da) {
+                return $conn->decision_area_id_1 == $da->id ? $conn->decision_area_id_2 : $conn->decision_area_id_1;
+            });
+    
+            if ($filteredConnections->isNotEmpty()) {
+                $daConnections[$da->id] = [
+                    'da' => $da,
+                    'connections' => $filteredConnections
+                ];
+            }
+        }
+
+        return view('decisionAreas.showConnections', compact('decisionAreas', 'daConnections', 'project_id'));
+    }
+
     public function connect(Request $request) {
         $request->validate([
             'decision_area_id_1' => 'required|exists:decision_areas,id',
-            'decision_area_id_2' => 'required|exists:decision_areas,id|different:decision_area_id_1',
+            'decision_area_id_2' => 'required|array',
+            'decision_area_id_2.*' => 'required|exists:decision_areas,id|different:decision_area_id_1',
             'project_id' => 'required|exists:projects,id',
         ]);
 
         $decision_area_id_1 = $request->decision_area_id_1;
-        $decision_area_id_2 = $request->decision_area_id_2;
+        // $decision_area_id_2 = $request->decision_area_id_2;
         $project_id = $request->project_id;
+        $messages = [];
 
-        $connectionExists = DB::table('decision_area_connections')
-            ->where(function($query) use ($decision_area_id_1, $decision_area_id_2, $project_id) {
-                $query->where('decision_area_id_1', $decision_area_id_1)
-                    ->where('decision_area_id_2', $decision_area_id_2)
-                    ->where('project_id', $project_id);
-            })->orWhere(function($query) use ($decision_area_id_1, $decision_area_id_2, $project_id) {
-                $query->where('decision_area_id_1', $decision_area_id_2)
-                    ->where('decision_area_id_2', $decision_area_id_1)
-                    ->where('project_id', $project_id);
-            })->exists();
+        foreach($request->decision_area_id_2 as $decision_area_id_2) {
+            $connectionExists = DB::table('decision_area_connections')
+                ->where(function($query) use ($decision_area_id_1, $decision_area_id_2, $project_id) {
+                    $query->where('decision_area_id_1', $decision_area_id_1)
+                        ->where('decision_area_id_2', $decision_area_id_2)
+                        ->where('project_id', $project_id);
+                })->orWhere(function($query) use ($decision_area_id_1, $decision_area_id_2, $project_id) {
+                    $query->where('decision_area_id_1', $decision_area_id_2)
+                        ->where('decision_area_id_2', $decision_area_id_1)
+                        ->where('project_id', $project_id);
+                })->exists();
 
-        if ($connectionExists) {
-            return redirect()->back()->with('error', 'These Decision Areas are already connected.');
+            if(!$connectionExists){
+                DB::table('decision_area_connections')->insert([
+                    'decision_area_id_1' => $decision_area_id_1,
+                    'decision_area_id_2' => $decision_area_id_2,
+                    'project_id' => $project_id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
         }
-
-        DB::table('decision_area_connections')->insert([
-            'decision_area_id_1' => $decision_area_id_1,
-            'decision_area_id_2' => $decision_area_id_2,
-            'project_id' => $project_id,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
 
         return redirect()->route('da.index', ['project_id' => $project_id])->with('message', 'Decision Areas connected successfully.');
     }

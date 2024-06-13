@@ -29,14 +29,14 @@
 @stop
 
 @section ('conteudo')
-    <div class="btn-group col-1 my-4 -ml-3">
-        <a href="{{ route('da.index', ['project_id' => $project_id]) }}" class="btn btn-primary d-flex gap-2 p-3">
+    <div class="btn-group mb-3">
+        <a href="{{ route('project.index') }}" class="btn btn-primary d-flex gap-2 p-3">
             <b>&#10554;</b>
             Back
         </a> 
     </div>
-    <div class="d-flex gap-2 row">
-        <main class="col-6 border border-black p-0 card">
+    <div class="d-flex gap-2 row m-auto">
+        <main class="col-5 border border-black p-0 card">
             <div class="card-header">
                 <h3 class="m-0">ADD DECISION AREA</h3>
             </div>
@@ -90,7 +90,8 @@
                         <h4>{{ $da->label }}</h4>
 
                         <div class="btn-group">
-                            <a href="{{ route('da.formEdit', ['project_id' => $project_id, 'da' => $da]) }}" class="btn btn-primary">View</a>
+                            <a href="{{ route('da.formConnect', ['project_id' => $project_id, 'da' => $da]) }}" class="btn btn-secondary">Connect</a>
+                            <a href="{{ route('da.formEdit', ['project_id' => $project_id, 'da' => $da]) }}" class="btn btn-primary">Edit</a>
                             <form action="{{ route('da.delete', ['project_id' => $project_id, 'da' => $da]) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
@@ -102,4 +103,8 @@
             </ul>
         </section>
     </div>
+    <div class="btn-group my-3 gap-2">
+		<a class="btn btn-info" href="{{ route('option.index', ['project_id' => $project_id]) }}">DESIGN</a>
+		<a class="btn btn-info" href="{{ route('da.viewConnections', ['project_id' => $project_id]) }}">View Connected Areas</a>
+	</div>
 @stop
