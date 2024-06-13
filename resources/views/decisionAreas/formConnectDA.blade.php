@@ -62,7 +62,7 @@
         </section>
         <h1>{{ $da }}</h1>
     </div> --}}
-    <div class="btn-group col-1 my-4 -ml-3">
+    <div class="btn-group my-2">
         <a href="{{ route('da.index', ['project_id' => $project_id]) }}" class="btn btn-primary d-flex gap-2 p-3">
             <b>&#10554;</b>
             Back
@@ -102,7 +102,7 @@
                     <input type="hidden" name="project_id" value="{{ $project_id }}">
                     @foreach ($availableDecisionAreas as $da)
                         <li class="w-100 d-flex align-items-baseline justify-content-between btn-group" role="group" aria-label="Basic checkbox toggle button group">
-                            <input type="checkbox" class="btn-check" id="btncheck{{ $da->id }}" name="decision_area_id_2" value="{{ $da->id }}" autocomplete="off">
+                            <input type="checkbox" class="btn-check" id="btncheck{{ $da->id }}" name="decision_area_id_2[]" value="{{ $da->id }}" autocomplete="off">
                             <label class="btn btn-outline-primary" for="btncheck{{ $da->id }}">{{ $da->label }}</label>
                         </li>
                     @endforeach

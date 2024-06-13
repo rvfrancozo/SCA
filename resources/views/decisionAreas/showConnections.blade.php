@@ -42,37 +42,14 @@
 		</div>
 	@endif
 
-	<h3 class="my-5">Decisions Areas</h3>
-	<div class="d-flex flex-wrap gap-5">
-		@foreach ($decisionAreas as $da)
-			<div class="border rounded-2 dropdown">
-				<a href="#" class="btn dropdown-toggle p-4 {{ ($da->isFocused) ? "btn-primary" : "" }}" data-bs-toggle="dropdown" aria-expanded="false">
-					<span class="fs-4">{{ $da->label }}</span>
-				</a>
-				<ul class="dropdown-menu">
-					<li><a class="dropdown-item" href="{{ route('da.formEdit', ['project_id' => $project_id, 'da' => $da]) }}">Edit</a></li>
-					<li><a class="dropdown-item" href="{{ route('da.formConnect', ['project_id' => $project_id, 'da' => $da]) }}">Connect</a></li>
-				</ul>
-			</div>
-		@endforeach
-	</div>
-	<div class="btn-group my-5 gap-2">
-		<a class="btn btn-info" href="{{ route('da.formCreate', ['project_id' => $project_id]) }}">Add Decision Area</a>
-		<a class="btn btn-info" href="{{ route('da.formPreConnect', ['project_id' => $project_id]) }}">Connect Decision Areas</a>
-	</div>
-
-	<h3 class="mt-5">Connections</h3>
+    <div class="btn-group">
+        <a href="{{ route('da.index', ['project_id' => $project_id]) }}" class="btn btn-primary d-flex gap-2 p-3">
+            <b>&#10554;</b>
+            Back
+        </a> 
+    </div>
+	<h3 class="mt-3">Connections</h3>
 	<ul class="list-group">
-		{{-- @foreach ($connections as $connection)
-			<li class="list-group-item">
-				@php
-					$da1 = $decisionAreas->firstWhere('id', $connection->decision_area_id_1);
-					$da2 = $decisionAreas->firstWhere('id', $connection->decision_area_id_2);
-				@endphp
-				{{ $da1->label }} <span class="text-muted">connected to</span> {{ $da2->label }}
-			</li>
-		@endforeach --}}
-
 		@foreach ($daConnections as $details)
 			<div class="border rounded-2 p-3 my-3">
 				<h4 class="mb-3">{{ $details['da']->label }} Connections</h4>
