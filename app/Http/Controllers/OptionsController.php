@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Comparison;
 use App\Models\DecisionArea;
 use App\Models\Option;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class OptionsController extends Controller
 {
@@ -103,34 +105,6 @@ class OptionsController extends Controller
         return redirect()->route('option.formCreate', ['project_id' => $project_id, 'decision_area_id' => $decision_area_id])->with('message', 'Option deleted sucessfully.');
     }
 
-    // public function formCompatibilityMatrix(Request $request) {
-    //     $project_id = $request->project_id;
-
-    //     $das = DecisionArea::where('project_id', $project_id)
-    //                     ->where('isFocused', true)
-    //                     ->get();
-
-    //     $firstDa = $das->shift();
-    //     $options = [];
-    //     foreach ($das as $da) {
-    //         $options[$da->id] = Option::where('decision_area_id', $da->id)
-    //                     ->where('project_id', $project_id)
-    //                     ->get();
-    //     }
-
-    //     $firstDaOptions = Option::where('decision_area_id', $firstDa->id)->get();
-
-    //     // dd($options);
-                        
-    //     return view('options.formCompatibilityMatrix', [
-    //         'project_id' => $project_id, 
-    //         'firstDa' => $firstDa,
-    //         'firstDaOptions' => $firstDaOptions,
-    //         'das' => $das, 
-    //         'options' => $options
-    //     ]);
-    // }
-
     public function formCompatibilityMatrix(Request $request) {
         $project_id = $request->project_id;
     
@@ -157,4 +131,62 @@ class OptionsController extends Controller
         ]);
     }
     
+    public function saveComparisons(Request $request){
+        Log::info('Form data received', $request->all());
+
+        $request->validate([
+            'project_id' => 'required|exists:projects,id',
+            'comparisons' => 'required|array',
+            'comparisons.*.*.*.option_id_1' => 'required|exists:options,id',
+            'comparisons.*.*.*.option_id_2' => 'required|exists:options,id',
+            'comparisons.*.*.*.state' => 'required|string|in:compatible,unknown,incompatible',
+        ]);
+
+        $project_id = $request->project_id;
+
+        foreach ($request->comparisons as $comparisonGroup) {
+            foreach ($comparisonGroup as $comparison) {
+                foreach ($comparison as $comp) {
+                    $option_id_1 = $comp['option_id_1'];
+                    $option_id_2 = $comp['option_id_2'];
+                    $state = $comp['state'];
+
+                    // Convert state to boolean or null
+                    $stateValue = null;
+                    if ($state === 'compatible') {
+                        $stateValue = true;
+                    } elseif ($state === 'incompatible') {
+                        $stateValue = false;
+                    }
+
+                    // Check if comparison already exists (either way)
+                    $existingComparison = Comparison::where('project_id', $project_id)
+                        ->where(function ($query) use ($option_id_1, $option_id_2) {
+                            $query->where('option_id_1', $option_id_1)
+                                ->where('option_id_2', $option_id_2);
+                        })
+                        ->orWhere(function ($query) use ($option_id_1, $option_id_2) {
+                            $query->where('option_id_1', $option_id_2)
+                                ->where('option_id_2', $option_id_1);
+                        })
+                        ->first();
+
+                    if ($existingComparison) {
+                        // Update the existing comparison
+                        $existingComparison->update(['state' => $stateValue]);
+                    } else {
+                        // Create a new comparison
+                        Comparison::create([
+                            'project_id' => $project_id,
+                            'option_id_1' => $option_id_1,
+                            'option_id_2' => $option_id_2,
+                            'state' => $stateValue,
+                        ]);
+                    }
+                }
+            }
+        }
+
+        return redirect()->route('option.index', ['project_id' => $project_id])->with('message', 'Comparisons saved successfully.');
+    }
 }

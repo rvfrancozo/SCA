@@ -38,55 +38,69 @@
     <div class="d-flex gap-2 row m-auto">
         <div class="col-12">
             <h3 class="mt-4 mb-4">Comparison Matrix</h3>
-            <div class="card">
-                    @foreach($comparisons as $comparisonIndex => $comparison)
-                        <div class="card-header">
-                            <h3>Comparison: {{ $comparison['da1']->label }} - {{ $comparison['da2']->label }}</h3>
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-bordered text-center mb-5">
-                                <thead>
+            <form action="{{ route('comparisons.save') }}" method="POST" class="card">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                @csrf
+                <input type="hidden" name="project_id" value="{{ $project_id }}">
+                @foreach($comparisons as $comparisonIndex => $comparison)
+                    <div class="card-header">
+                        <h3>Comparison: {{ $comparison['da1']->label }} - {{ $comparison['da2']->label }}</h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered text-center mb-5">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2" class="text-center m-auto">DAS</th>
+                                    <th colspan="{{ $comparison['da2Options']->count() + 1 }}">{{ $comparison['da1']->label }}</th>
+                                </tr>
+                                <tr>
+                                    <th>Options</th>
+                                    @foreach($comparison['da2Options'] as $option)
+                                        <th>{{ $option->label }}</th>
+                                    @endforeach
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($comparison['da1Options'] as $optionIndex => $option)
                                     <tr>
-                                        <th rowspan="2" class="text-center m-auto">DAS</th>
-                                        <th colspan="{{ $comparison['da2Options']->count() + 1 }}">{{ $comparison['da1']->label }}</th>
-                                    </tr>
-                                    <tr>
-                                        <th>Options</th>
-                                        @foreach($comparison['da2Options'] as $option)
-                                            <th>{{ $option->label }}</th>
+                                        @if ($loop->first)
+                                            <th rowspan="{{ $comparison['da1Options']->count() }}">{{ $comparison['da2']->label }}</th>
+                                        @endif
+                                        <th scope="row">{{ $option->label }}</th>
+                                        @foreach($comparison['da2Options'] as $optIndex => $opt)
+                                            <td>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="comparisons[{{ $comparisonIndex }}][{{ $optionIndex }}][{{ $optIndex }}][state]" id="state{{ $comparisonIndex }}_{{ $optionIndex }}_{{ $optIndex }}_compatible" value="compatible">
+                                                    <label class="form-check-label" for="state{{ $comparisonIndex }}_{{ $optionIndex }}_{{ $optIndex }}_compatible">&#8226; Compatible</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="comparisons[{{ $comparisonIndex }}][{{ $optionIndex }}][{{ $optIndex }}][state]" id="state{{ $comparisonIndex }}_{{ $optionIndex }}_{{ $optIndex }}_unknown" value="unknown" checked>
+                                                    <label class="form-check-label" for="state{{ $comparisonIndex }}_{{ $optionIndex }}_{{ $optIndex }}_unknown">? Unknown</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="comparisons[{{ $comparisonIndex }}][{{ $optionIndex }}][{{ $optIndex }}][state]" id="state{{ $comparisonIndex }}_{{ $optionIndex }}_{{ $optIndex }}_incompatible" value="incompatible">
+                                                    <label class="form-check-label" for="state{{ $comparisonIndex }}_{{ $optionIndex }}_{{ $optIndex }}_incompatible">× Incompatible</label>
+                                                </div>
+                                                <input type="hidden" name="comparisons[{{ $comparisonIndex }}][{{ $optionIndex }}][{{ $optIndex }}][option_id_1]" value="{{ $option->id }}">
+                                                <input type="hidden" name="comparisons[{{ $comparisonIndex }}][{{ $optionIndex }}][{{ $optIndex }}][option_id_2]" value="{{ $opt->id }}">
+                                            </td>
                                         @endforeach
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($comparison['da1Options'] as $optionIndex => $option)
-                                        <tr>
-                                            @if ($loop->first)
-                                                <th rowspan="{{ $comparison['da1Options']->count() }}">{{ $comparison['da2']->label }}</th>
-                                            @endif
-                                            <th scope="row">{{ $option->label }}</th>
-                                            @foreach($comparison['da2Options'] as $optIndex => $opt)
-                                                <td>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="state{{ $comparisonIndex }}_{{ $optionIndex }}_{{ $optIndex }}" id="state{{ $comparisonIndex }}_{{ $optionIndex }}_{{ $optIndex }}_compatible" value="compatible">
-                                                        <label class="form-check-label" for="state{{ $comparisonIndex }}_{{ $optionIndex }}_{{ $optIndex }}_compatible">&#8226; Compatible</label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="state{{ $comparisonIndex }}_{{ $optionIndex }}_{{ $optIndex }}" id="state{{ $comparisonIndex }}_{{ $optionIndex }}_{{ $optIndex }}_unknown" value="unknown" checked>
-                                                        <label class="form-check-label" for="state{{ $comparisonIndex }}_{{ $optionIndex }}_{{ $optIndex }}_unknown">? Unknown</label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="state{{ $comparisonIndex }}_{{ $optionIndex }}_{{ $optIndex }}" id="state{{ $comparisonIndex }}_{{ $optionIndex }}_{{ $optIndex }}_incompatible" value="incompatible">
-                                                        <label class="form-check-label" for="state{{ $comparisonIndex }}_{{ $optionIndex }}_{{ $optIndex }}_incompatible">× Incompatible</label>
-                                                    </div>
-                                                </td>
-                                            @endforeach
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    @endforeach
-            </div>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endforeach
+                <button type="submit" class="btn btn-primary align-self-start ml-4 mb-4">Save Comparisons</button>
+            </form>            
         </div>
     </div>
     {{-- <table class="table table-bordered text-center">
