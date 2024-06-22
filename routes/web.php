@@ -61,6 +61,7 @@ Route::get('/auth/google/callback', [AuthController::class, 'googlecallback']);
         Route::put('/options/{option_id}/edit', [OptionsController::class, 'editOption'])->name('option.edit');
         Route::delete('/options/{option_id}/delete', [OptionsController::class, 'deleteOption'])->name('option.delete');
         Route::get('/project_{project_id}/SHAPE/options/matrix', [OptionsController::class, 'formCompatibilityMatrix'])->name('option.formMatrix');
+        Route::post('/comparisons/save', [OptionsController::class, 'saveComparisons'])->name('comparisons.save');
 
 // Route::get('/AHP', [AHPController::class, 'AHP']);
 

@@ -169,7 +169,6 @@ class DecisionAreaController extends Controller {
         ]);
 
         $decision_area_id_1 = $request->decision_area_id_1;
-        // $decision_area_id_2 = $request->decision_area_id_2;
         $project_id = $request->project_id;
         $messages = [];
 
