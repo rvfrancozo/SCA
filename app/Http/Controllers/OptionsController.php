@@ -105,29 +105,62 @@ class OptionsController extends Controller
         return redirect()->route('option.formCreate', ['project_id' => $project_id, 'decision_area_id' => $decision_area_id])->with('message', 'Option deleted sucessfully.');
     }
 
-    public function formCompatibilityMatrix(Request $request) {
+    public function formCompatibilityMatrix(Request $request){
         $project_id = $request->project_id;
-    
+
         $das = DecisionArea::where('project_id', $project_id)
-                        ->where('isFocused', true)
-                        ->get();
-    
+            ->where('isFocused', true)
+            ->get();
+
+        $optionsByDa = $das->mapWithKeys(function ($da) {
+            return [$da->id => $da->options->toArray()];
+        });
+
         $comparisons = [];
-        foreach ($das as $key1 => $da1) {
-            for ($key2 = $key1 + 1; $key2 < $das->count(); $key2++) {
-                $da2 = $das[$key2];
-                $comparisons[] = [
-                    'da1' => $da1,
-                    'da1Options' => Option::where('decision_area_id', $da1->id)->get(),
-                    'da2' => $da2,
-                    'da2Options' => Option::where('decision_area_id', $da2->id)->get()
-                ];
+
+        foreach ($das as $da1) {
+            foreach ($das as $da2) {
+                if ($da1->id < $da2->id) {
+                    $da1Options = $optionsByDa[$da1->id];
+                    $da2Options = $optionsByDa[$da2->id];
+
+                    $comparisonData = [
+                        'da1' => $da1,
+                        'da2' => $da2,
+                        'da1Options' => $da1Options,
+                        'da2Options' => $da2Options,
+                        'comparisons' => [],
+                    ];
+
+                    foreach ($da1Options as $option1) {
+                        foreach ($da2Options as $option2) {
+                            $comparison = Comparison::where('project_id', $project_id)
+                                ->where(function ($query) use ($option1, $option2) {
+                                    $query->where('option_id_1', $option1['id'])
+                                        ->where('option_id_2', $option2['id']);
+                                })
+                                ->orWhere(function ($query) use ($option1, $option2) {
+                                    $query->where('option_id_1', $option2['id'])
+                                        ->where('option_id_2', $option1['id']);
+                                })
+                                ->first();
+
+                            $comparisonData['comparisons'][$option1['id']][$option2['id']] = $comparison ? $comparison->state : 'unknown';
+                        }
+                    }
+
+                    $comparisons[] = $comparisonData;
+                }
             }
         }
-                        
+
+        // dd($comparisons);
+
         return view('options.formCompatibilityMatrix', [
             'project_id' => $project_id,
-            'comparisons' => $comparisons
+            'das' => $das,
+            'optionsByDa' => $optionsByDa,
+            'comparisons' => $comparisons,
         ]);
     }
     
@@ -150,8 +183,7 @@ class OptionsController extends Controller
                     $option_id_1 = $comp['option_id_1'];
                     $option_id_2 = $comp['option_id_2'];
                     $state = $comp['state'];
-
-                    // Convert state to boolean or null
+    
                     $stateValue = null;
                     if ($state === 'compatible') {
                         $stateValue = true;
@@ -159,23 +191,20 @@ class OptionsController extends Controller
                         $stateValue = false;
                     }
 
-                    // Check if comparison already exists (either way)
                     $existingComparison = Comparison::where('project_id', $project_id)
                         ->where(function ($query) use ($option_id_1, $option_id_2) {
                             $query->where('option_id_1', $option_id_1)
-                                ->where('option_id_2', $option_id_2);
+                                  ->where('option_id_2', $option_id_2);
                         })
                         ->orWhere(function ($query) use ($option_id_1, $option_id_2) {
                             $query->where('option_id_1', $option_id_2)
-                                ->where('option_id_2', $option_id_1);
+                                  ->where('option_id_2', $option_id_1);
                         })
                         ->first();
-
+    
                     if ($existingComparison) {
-                        // Update the existing comparison
                         $existingComparison->update(['state' => $stateValue]);
                     } else {
-                        // Create a new comparison
                         Comparison::create([
                             'project_id' => $project_id,
                             'option_id_1' => $option_id_1,

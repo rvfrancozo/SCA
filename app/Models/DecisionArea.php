@@ -20,4 +20,8 @@ class DecisionArea extends Model
     {
         return $this->belongsToMany(DecisionArea::class, 'decision_area_connections', 'decision_area_id_1', 'decision_area_id_2');
     }
+
+    public function options() {
+        return $this->hasMany(Option::class, 'decision_area_id');
+    }
 }
