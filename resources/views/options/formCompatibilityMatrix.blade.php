@@ -149,6 +149,6 @@
                     </table> --}}
     <div class="btn-group my-3 gap-2">
         <a class="btn btn-info disabled" href="#">COMPARE</a>
-		<a class="btn btn-info disabled" href="#">View Options Schema</a>
+		<a class="btn btn-info" href="{{ route('comparisons.scheme', ['project_id' => $project_id]) }}">View Options Schema</a>
     </div>
 @stop

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Comparison;
 use App\Models\DecisionArea;
 use App\Models\Option;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -105,7 +106,7 @@ class OptionsController extends Controller
         return redirect()->route('option.formCreate', ['project_id' => $project_id, 'decision_area_id' => $decision_area_id])->with('message', 'Option deleted sucessfully.');
     }
 
-    public function formCompatibilityMatrix(Request $request){
+    public function formCompatibilityMatrix(Request $request) {
         $project_id = $request->project_id;
 
         $das = DecisionArea::where('project_id', $project_id)
@@ -164,7 +165,7 @@ class OptionsController extends Controller
         ]);
     }
     
-    public function saveComparisons(Request $request){
+    public function saveComparisons(Request $request) {
         Log::info('Form data received', $request->all());
 
         $request->validate([
@@ -217,5 +218,30 @@ class OptionsController extends Controller
         }
 
         return redirect()->route('option.index', ['project_id' => $project_id])->with('message', 'Comparisons saved successfully.');
+    }
+
+    public function showSchemes(Request $request) {
+        $project_id = $request->project_id;
+        $project = Project::findOrFail($project_id);
+        $decisionAreas = DecisionArea::where('project_id', $project_id)->where('isFocused', true)->get();
+        $options = Option::where('project_id', $project_id)->get();
+        // $comparisons = Comparison::where('project_id', $project_id)->get();
+
+        $comparisonData = Comparison::select('comparisons.*')
+        ->join('options as opt1', 'comparisons.option_id_1', '=', 'opt1.id')
+        ->join('options as opt2', 'comparisons.option_id_2', '=', 'opt2.id')
+        ->join('decision_areas as da1', 'opt1.decision_area_id', '=', 'da1.id')
+        ->join('decision_areas as da2', 'opt2.decision_area_id', '=', 'da2.id')
+        ->where('da1.project_id', $project_id)
+        ->where('da2.project_id', $project_id)
+        ->where('da1.isFocused', true)
+        ->where('da2.isFocused', true)
+        // ->where('comparisons.option_id_1', '<', 'comparisons.option_id_2')
+        ->distinct()
+        ->get();
+
+        // dd($comparisonData);
+
+        return view('options.viewSchema', compact('project', 'decisionAreas', 'options', 'comparisonData', 'project_id'));
     }
 }

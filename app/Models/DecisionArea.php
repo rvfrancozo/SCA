@@ -22,6 +22,6 @@ class DecisionArea extends Model
     }
 
     public function options() {
-        return $this->hasMany(Option::class, 'decision_area_id');
+        return $this->hasMany(Option::class);
     }
 }
