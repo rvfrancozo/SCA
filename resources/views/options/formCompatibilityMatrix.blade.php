@@ -61,7 +61,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($comparison['da1Options'] as $optionIndex => $option)
+                                    {{-- @foreach($comparison['da1Options'] as $optionIndex => $option)
                                         <tr>
                                             @if ($loop->first)
                                                 <th rowspan="{{ count($comparison['da1Options']) }}" class="align-middle"><p>{{ $comparison['da2']->label }}</p></th>
@@ -95,7 +95,9 @@
                                                 </td>
                                             @endforeach
                                         </tr>
-                                    @endforeach
+                                    @endforeach --}}
+
+                                    
                                 </tbody>
                             </table>
                         </div>
