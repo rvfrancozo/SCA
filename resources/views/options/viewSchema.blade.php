@@ -48,7 +48,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($options->where('decision_area_id', $decisionAreas->first()->id) as $option)
+                    {{-- @foreach($options->where('decision_area_id', $decisionAreas->first()->id) as $option)
                         @php
                             $rowOptions = [$option];
                         @endphp
@@ -90,6 +90,17 @@
                                     $rowOptions = $nextRowOptions;
                                 @endphp
                             @endforeach
+                        </tr>
+                    @endforeach --}}
+                    @foreach ($data as $d)
+                        <tr>
+                            <td>
+                                @foreach ($d as $options)
+                                    @foreach ($options as $opt)
+                                        <div>{{ $opt }}</div>
+                                    @endforeach
+                                @endforeach
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

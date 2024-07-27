@@ -221,27 +221,45 @@ class OptionsController extends Controller
     }
 
     public function showSchemes(Request $request) {
+        function querySchema(Request $request, $da_id) {
+            $options = Option::where('project_id', $request->project_id)
+                ->where('decision_area_id', $da_id)
+                ->get()
+                ->toArray();
+
+            // returns all options
+            // Objetive: Call this function multiple times to get specific options for each da and generate an array
+            return $options;
+        }
+        
         $project_id = $request->project_id;
         $project = Project::findOrFail($project_id);
-        $decisionAreas = DecisionArea::where('project_id', $project_id)->where('isFocused', true)->get();
+        $decisionAreas = DecisionArea::where('project_id', $project_id)
+            ->where('isFocused', true)
+            ->get();
+            // ->toArray();
         $options = Option::where('project_id', $project_id)->get();
-        // $comparisons = Comparison::where('project_id', $project_id)->get();
 
-        $comparisonData = Comparison::select('comparisons.*')
-        ->join('options as opt1', 'comparisons.option_id_1', '=', 'opt1.id')
-        ->join('options as opt2', 'comparisons.option_id_2', '=', 'opt2.id')
-        ->join('decision_areas as da1', 'opt1.decision_area_id', '=', 'da1.id')
-        ->join('decision_areas as da2', 'opt2.decision_area_id', '=', 'da2.id')
-        ->where('da1.project_id', $project_id)
-        ->where('da2.project_id', $project_id)
-        ->where('da1.isFocused', true)
-        ->where('da2.isFocused', true)
-        // ->where('comparisons.option_id_1', '<', 'comparisons.option_id_2')
-        ->distinct()
-        ->get();
+        $data = collect();
+        // $comparisonData = Comparison::select('comparisons.*')
+        // ->join('options as opt1', 'comparisons.option_id_1', '=', 'opt1.id')
+        // ->join('options as opt2', 'comparisons.option_id_2', '=', 'opt2.id')
+        // ->join('decision_areas as da1', 'opt1.decision_area_id', '=', 'da1.id')
+        // ->join('decision_areas as da2', 'opt2.decision_area_id', '=', 'da2.id')
+        // ->where('da1.project_id', $project_id)
+        // ->where('da2.project_id', $project_id)
+        // ->where('da1.isFocused', true)
+        // ->where('da2.isFocused', true)
+        // ->distinct()
+        // ->get();
 
-        // dd($comparisonData);
+        
+        foreach($decisionAreas as $da) {
+            $data->push(querySchema($request, $da->id));
+        }
 
-        return view('options.viewSchema', compact('project', 'decisionAreas', 'options', 'comparisonData', 'project_id'));
+        dd($data);
+
+        return view('options.viewSchema', compact('project', 'decisionAreas', 'options', 'data', 'project_id'));
     }
 }
