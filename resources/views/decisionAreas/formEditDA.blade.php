@@ -98,11 +98,30 @@
                         <div class="btn-group">
                             <a href="{{ route('da.formConnect', ['project_id' => $project_id, 'da' => $da]) }}" class="btn btn-secondary">Connect</a>
                             <a href="{{ route('da.formEdit',  ['project_id' => $project_id, 'da' => $da]) }}" class="btn btn-primary">Edit</a>
-                            <form action="{{ route('da.delete', ['project_id' => $project_id, 'da' => $da]) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button  class="btn btn-danger">Remove</button>
-                            </form>
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                Remove
+                            </button>
+                            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure you want to delete the <b>{{ $da->label }}</b> DA?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <form action="{{ route('da.delete', ['project_id' => $project_id, 'da' => $da]) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button  class="btn btn-danger">Remove</button>
+                                        </form>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
                         </div>
                     </li>
                 @endforeach

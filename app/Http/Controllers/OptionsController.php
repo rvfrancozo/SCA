@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Comparison;
 use App\Models\DecisionArea;
+use App\Models\DecisionAreaConnection;
 use App\Models\Option;
 use App\Models\Project;
 use Illuminate\Http\Request;
@@ -222,10 +223,13 @@ class OptionsController extends Controller
 
     public function showSchemes(Request $request) {
         function querySchema(Request $request, $da_id) {
-            $options = Option::where('project_id', $request->project_id)
-                ->where('decision_area_id', $da_id)
-                ->get()
-                ->toArray();
+            $options = Option::where([
+                    ['project_id', $request->project_id], 
+                    ['decision_area_id', $da_id]
+                ])
+                ->get();
+                
+            // dd($connected);
 
             // returns all options
             // Objetive: Call this function multiple times to get specific options for each da and generate an array
@@ -239,6 +243,9 @@ class OptionsController extends Controller
             ->get();
             // ->toArray();
         $options = Option::where('project_id', $project_id)->get();
+        $comparisons = Comparison::where('project_id', $request->project_id)
+            ->distinct()
+            ->get();
 
         $data = collect();
         // $comparisonData = Comparison::select('comparisons.*')
@@ -258,8 +265,8 @@ class OptionsController extends Controller
             $data->push(querySchema($request, $da->id));
         }
 
-        dd($data);
+        // dd($comparisons);
 
-        return view('options.viewSchema', compact('project', 'decisionAreas', 'options', 'data', 'project_id'));
+        return view('options.viewSchema', compact('project', 'decisionAreas', 'options', 'data', 'comparisons', 'project_id'));
     }
 }
