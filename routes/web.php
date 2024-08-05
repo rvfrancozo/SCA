@@ -64,7 +64,6 @@ Route::get('/auth/google/callback', [AuthController::class, 'googlecallback']);
         Route::post('/comparisons/save', [OptionsController::class, 'saveComparisons'])->name('comparisons.save');
         Route::get('/project/{project_id}/schemes', [OptionsController::class, 'showSchemes'])->name('comparisons.scheme');
 
-
 // Route::get('/AHP', [AHPController::class, 'AHP']);
 
 // AHP routes

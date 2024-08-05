@@ -59,8 +59,11 @@
 							$connectedDa = $decisionAreas->firstWhere('id', $connectedDaId);
 						@endphp
 						@if ($connectedDa)
-							<li class="list-group-item">
-								{{ $details['da']->label }} <span class="text-muted">connected to</span> {{ $connectedDa->label }}
+							<li class="list-group-item d-flex justify-content-between">
+								<span>{{ $details['da']->label }} <span class="text-muted">connected to</span> {{ $connectedDa->label }}</span>
+								<button class="btn btn-danger">
+									Remove
+								</button>
 							</li>
 						@endif
 					@endforeach

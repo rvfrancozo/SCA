@@ -67,7 +67,7 @@ class DecisionAreaController extends Controller {
     }
 
     public function formEditDA($project_id, DecisionArea $da) {
-        $decisionAreas = DecisionArea::query()->orderBy('id')->paginate();
+        $decisionAreas = DecisionArea::query()->orderBy('id')->paginate()->where('project_id', $project_id);
 
         return view("decisionAreas.formEditDA", compact('da', 'decisionAreas', 'project_id'));
     }
@@ -82,7 +82,8 @@ class DecisionAreaController extends Controller {
         ]);
 
         $data['isFocused'] = $request->filled('isFocused');
-        $data['$project_id'] = $project_id;
+        $data['project_id'] = $project_id;
+        // dd($data['project_id'], $project_id);
         $da = DecisionArea::create($data);
 
         return redirect()->route('da.index', $project_id)->with('message', 'Decision Area was created');
@@ -196,5 +197,9 @@ class DecisionAreaController extends Controller {
         }
 
         return redirect()->route('da.index', ['project_id' => $project_id])->with('message', 'Decision Areas connected successfully.');
+    }
+
+    public function deleteConnection(Request $request) {
+        
     }
 }
