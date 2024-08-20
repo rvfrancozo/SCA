@@ -77,7 +77,7 @@
                     <label class="btn btn-outline-info align-self-start" for="isFocused">Focus</label>
                 </div>
                 <div class="align-self-start btn-group gap-1">
-                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button type="submit" class="btn btn-primary">Edit</button>
                 </div>
             </form>
         </main>
@@ -98,10 +98,10 @@
                         <div class="btn-group">
                             <a href="{{ route('da.formConnect', ['project_id' => $project_id, 'da' => $da]) }}" class="btn btn-secondary">Connect</a>
                             <a href="{{ route('da.formEdit',  ['project_id' => $project_id, 'da' => $da]) }}" class="btn btn-primary">Edit</a>
-                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ $da->id }}">
                                 Remove
                             </button>
-                            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal fade" id="staticBackdrop-{{ $da->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                   <div class="modal-content">
                                     <div class="modal-header">
