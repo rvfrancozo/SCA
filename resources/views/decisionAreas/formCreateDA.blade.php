@@ -87,15 +87,18 @@
             <ul class="fa-ul list-unstyled d-flex flex-column gap-2 px-2 m-0 p-2 px-4">
                 @foreach ($das as $da)
                     <li class="w-100 d-flex align-items-baseline justify-content-between">
+                        @php
+                            $da_test = $da;
+                        @endphp
                         <h4>{{ $da->label }}</h4>
 
                         <div class="btn-group">
                             <a href="{{ route('da.formConnect', ['project_id' => $project_id, 'da' => $da]) }}" class="btn btn-secondary">Connect</a>
                             <a href="{{ route('da.formEdit', ['project_id' => $project_id, 'da' => $da]) }}" class="btn btn-primary">Edit</a>
-                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{ $da->id }}">
                                 Remove
                             </button>
-                            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal fade" id="staticBackdrop-{{ $da->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                   <div class="modal-content">
                                     <div class="modal-header">

@@ -98,13 +98,14 @@ class DecisionAreaController extends Controller {
             'isFocused' => ['boolean'],
         ]);
 
-        // $data['isFocused'] = $request->filled('isFocused');
         $da->update($data);
 
         return redirect()->route('da.index', ['project_id' => $project_id, 'da' => $da])->with('message', 'Decision Area was updated');
     }
 
     public function deleteDA($project_id, DecisionArea $da) {
+        // dd($da);
+
         $da->delete();
         
         return redirect()->route('da.index', ['project_id' => $project_id, 'da' => $da])->with('message', 'Decision Area was deleted');
