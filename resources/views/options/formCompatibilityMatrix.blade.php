@@ -55,16 +55,16 @@
                                     </tr>
                                     <tr>
                                         <th>Options</th>
-                                        @foreach($comparison['da2Options'] as $option)
+                                        @foreach($comparison['da1Options'] as $option)
                                             <th>{{ $option['label'] }}</th>
                                         @endforeach
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($comparison['da1Options'] as $optionIndex => $option)
+                                    @foreach($comparison['da2Options'] as $optionIndex => $option)
                                         <tr>
                                             @if ($loop->first)
-                                                <th rowspan="{{ count($comparison['da1Options']) }}" class="align-middle"><p>{{ $comparison['da2']->label }}</p></th>
+                                                <th rowspan="{{ count($comparison['da2Options']) }}" class="align-middle"><p>{{ $comparison['da2']->label }}</p></th>
                                             @endif
                                             <th scope="row">{{ $option['label'] }}</th>
                                             @foreach($comparison['da2Options'] as $optIndex => $opt)
