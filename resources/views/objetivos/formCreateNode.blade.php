@@ -20,7 +20,7 @@
 	</li>
 	&nbsp;&nbsp;&nbsp;&nbsp;
 	<li>
-		<form method="POST" action="/formCreateNode/0">
+		<form method="GET" action="/formCreateProject">
 			@csrf
 			<button style="border:none;background-color:transparent" type="submit" class="nav-link">New Decision Problem</button>
 		</form>
