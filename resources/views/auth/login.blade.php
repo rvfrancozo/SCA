@@ -27,12 +27,17 @@
 
 @section('conteudo')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    .btn-github{color:#fff;background-color:#444;border-color:rgba(0,0,0,0.2)}.btn-github:focus,.btn-github.focus{color:#fff;background-color:#2b2b2b;border-color:rgba(0,0,0,0.2)}
+    .btn-github:hover{color:#fff;background-color:#2b2b2b;border-color:rgba(0,0,0,0.2)}
+    .btn-google{color:#fff;background-color:#dd4b39;border-color:rgba(0,0,0,0.2)}.btn-google:focus,.btn-google.focus{color:#fff;background-color:#c23321;border-color:rgba(0,0,0,0.2)}
+    .btn-google:hover{color:#fff;background-color:#c23321;border-color:rgba(0,0,0,0.2)}
+</style>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Login') }}</div>
-
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
@@ -93,18 +98,15 @@
                         <hr>
                     </form>
                     Are you not a member?  <a href="{{ route("register") }}">Register</a> or use your social login:
-                    
                 </div>
-
-<!-- <a class="btn btn-block btn-social btn-twitter">
-    <span class="fa fa-twitter"></span> Sign in with Twitter
-</a><br> -->
-<a href="{{route('githublogin')}}" class="btn btn-block btn-social btn-github">
-    <span class="fa fa-github"></span> Sign in with Github
-</a><br>
-<a href="{{route('googlelogin')}}"  class="btn btn-block btn-social btn-google">
-    <span class="fa fa-google"></span> Sign in with Google
-</a>
+                <div class="d-grid gap-2 col-6 mx-auto mb-3">
+                    <a href="{{route('githublogin')}}" class="btn btn-block btn-social btn-github">
+                        <span class="fa fa-github"></span> Sign in with Github
+                    </a>
+                    <a href="{{route('googlelogin')}}" class="btn btn-block btn-social btn-google">
+                        <span class="fa fa-google"></span> Sign in with Google
+                    </a>
+                </div>
             </div>
         </div>    
     </div>
