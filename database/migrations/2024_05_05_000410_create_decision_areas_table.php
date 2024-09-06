@@ -21,8 +21,11 @@ return new class extends Migration
             $table->integer('urgency')->default(5);
             $table->boolean('isFocused')->default(false);
             $table->unsignedBigInteger('project_id')->default(1);
-            $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');    
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
         });
     }
 

@@ -11,8 +11,9 @@ use Illuminate\Support\Facades\DB;
 class DecisionAreaController extends Controller {
     public function index(Request $request) {
         $project_id = $request->project_id;
-        $decisionAreas = DecisionArea::where('project_id', $project_id)->get();
+        $decisionAreas = DecisionArea::where('user_id', $request->user_id)->where('project_id', $project_id)->get();
         $connections = DB::table('decision_area_connections')
+            ->where('user_id', $request->user_id)
             ->where('project_id', $project_id)
             ->get();
 
@@ -61,13 +62,17 @@ class DecisionAreaController extends Controller {
 
     public function formCreateDA(Request $request) {
         $project_id = $request->project_id;
-        $das = DecisionArea::where('project_id', $project_id)->get();
+        $das = DecisionArea::where('user_id', $request->user_id)->where('project_id', $project_id)->get();
 
         return view("decisionAreas.formCreateDA", compact('das', 'project_id'));
     }
 
-    public function formEditDA($project_id, DecisionArea $da) {
-        $decisionAreas = DecisionArea::query()->orderBy('id')->paginate()->where('project_id', $project_id);
+    public function formEditDA(Request $request, $project_id, DecisionArea $da) {
+        $decisionAreas = DecisionArea::query()
+            ->orderBy('id')
+            ->paginate()
+            ->where('user_id', $request->user_id)
+            ->where('project_id', $project_id);
 
         return view("decisionAreas.formEditDA", compact('da', 'decisionAreas', 'project_id'));
     }
@@ -79,10 +84,12 @@ class DecisionAreaController extends Controller {
             'importancy' => ['required', 'integer'],
             'urgency' => ['required', 'integer'],
             'isFocused' => ['boolean'],
+            'user_id' => 'required|integer'
         ]);
 
         $data['isFocused'] = $request->filled('isFocused');
         $data['project_id'] = $project_id;
+        $data['user_id'] = $request->user_id;
         // dd($data['project_id'], $project_id);
         $da = DecisionArea::create($data);
 
@@ -111,8 +118,8 @@ class DecisionAreaController extends Controller {
         return redirect()->route('da.index', ['project_id' => $project_id, 'da' => $da])->with('message', 'Decision Area was deleted');
     }
 
-    public function formPreConnectDA($project_id) {
-        $decisionAreas = DecisionArea::where('project_id', $project_id)->get();
+    public function formPreConnectDA(Request $request, $project_id) {
+        $decisionAreas = DecisionArea::where('user_id', $request->user_id)->where('project_id', $project_id)->get();
 
         return view("decisionAreas.formPreConnectDA", compact('decisionAreas', 'project_id'));
     }
@@ -120,7 +127,7 @@ class DecisionAreaController extends Controller {
     public function formConnectDA($project_id, Request $request, DecisionArea $da) {
         $project_id = $request->project_id;
 
-        $decisionAreas = DecisionArea::where('project_id', $project_id)->get();
+        $decisionAreas = DecisionArea::where('user_id', $request->user_id)->where('project_id', $project_id)->get();
 
         $connectedIds1 = DecisionAreaConnection::where('decision_area_id_1', $da->id)
                                             ->pluck('decision_area_id_2')
@@ -138,7 +145,7 @@ class DecisionAreaController extends Controller {
 
     public function showConnections(Request $request) {
         $project_id = $request->project_id;
-        $decisionAreas = DecisionArea::where('project_id', $project_id)->get();
+        $decisionAreas = DecisionArea::where('user_id', $request->user_id)->where('project_id', $project_id)->get();
         $connections = DB::table('decision_area_connections')
             ->where('project_id', $project_id)
             ->get();
@@ -201,6 +208,6 @@ class DecisionAreaController extends Controller {
     }
 
     public function deleteConnection(Request $request) {
-        
+        // Todo
     }
 }

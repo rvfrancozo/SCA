@@ -19,7 +19,8 @@ class ProjectFactory extends Factory
         static $num = 1;
         return [
             'name' => "Project ".str($num++)->trim()->toString(),
-            'description' => fake()->realText(200)
+            'description' => fake()->realText(200),
+            'user_id' => 1,
         ];
     }
 }
