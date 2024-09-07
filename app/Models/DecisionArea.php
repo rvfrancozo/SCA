@@ -9,7 +9,11 @@ class DecisionArea extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['label', 'description', 'importancy', 'urgency', 'isFocused', 'project_id'];
+    protected $fillable = ['label', 'description', 'importancy', 'urgency', 'isFocused', 'project_id', 'user_id'];
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 
     public function project()
     {
