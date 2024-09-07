@@ -238,7 +238,8 @@ class OptionsController extends Controller
         
         $project_id = $request->project_id;
         $project = Project::findOrFail($project_id);
-        $decisionAreas = DecisionArea::where('project_id', $project_id)
+        $decisionAreas = DecisionArea::where('user_id', $request->user_id)
+            ->where('project_id', $project_id)
             ->where('isFocused', true)
             ->get();
             // ->toArray();
