@@ -20,7 +20,7 @@
 	</li>
 	&nbsp;&nbsp;&nbsp;&nbsp;
 	<li>
-		<form method="POST" action="/formCreateNode/0">
+		<form method="GET" action="/formCreateProject">
 			@csrf
 			<button style="border:none;background-color:transparent" type="submit" class="nav-link">New Decision Problem</button>
 		</form>
@@ -70,34 +70,9 @@
 						<form action="{{ route('project.remove', $o->id) }}" method="POST">
 							@csrf
 							@method('delete')
-							<button class="btn btn-sm btn-danger">Remove</button>
-							{{-- data-toggle="modal" data-target="#excluir_{{$o->id}}" --}}
+							<button class="btn btn-sm btn-danger">Remove</button> 
 						</form>
-
-						{{-- {{ Form::open(['method' => 'POST', 'route' => 'project.remove']) }}
-							{{ Form::hidden('id',$o->id) }}
-							{{ Form::submit('Delete') }}
-						{{ Form::close() }} --}}
 					</div>
-					{{-- <div class="modal" id="excluir_{{$o->id}}">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h4 class="modal-title">Are you sure? #{{$o->id}}</h4>
-									<button type="button" class="close" data-dismiss="modal"></button>
-								</div>
-								<div class="modal-body">
-									<strong>Project:</strong> {{$o->name}}
-								</div>
-								<div class="modal-footer">
-									<div class="btn-group">
-										<button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-										<a class="btn btn-danger" href="/project/{{$o->id}}">Remove</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div> --}}
 				</td>
 			</tr>
 			@endforeach

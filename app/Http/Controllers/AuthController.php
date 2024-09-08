@@ -26,7 +26,7 @@ class AuthController extends Controller
             $user->avatar = $userdata->avatar;
             Auth::login($user);
             //dd($userdata);
-            return redirect('/');
+            return redirect()->route('project.index');
 
         } else {
 
@@ -41,7 +41,7 @@ class AuthController extends Controller
             $user->save();
             Auth::login($user);
             //dd($userdata);
-            return redirect('/');
+            return redirect()->route('project.index');
         }
     }
 
@@ -60,7 +60,7 @@ class AuthController extends Controller
             $user->avatar = $userdata->avatar;
             Auth::login($user);
             //dd($userdata);
-            return redirect('/');
+            return redirect()->route('project.index');
 
         } else {
 
@@ -75,7 +75,7 @@ class AuthController extends Controller
             $user->save();
             Auth::login($user);
             //dd($userdata);
-            return redirect('/');
+            return redirect()->route('project.index');
         }
     }
 }

@@ -13,14 +13,14 @@
 	@else
 
 	<li class="nav-item">
-		<form method="GET" action="/nodes">
+		<form method="GET" action="/home">
 			@csrf
 			<button style="border:none;background-color:transparent" type="submit" class="nav-link">My Decision Problems</button>
 		</form>
 	</li>
 	&nbsp;&nbsp;&nbsp;&nbsp;
 	<li>
-		<form method="POST" action="/formCreateNode/0">
+		<form method="POST" action="/formCreateProject">
 			@csrf
 			<button style="border:none;background-color:transparent" type="submit" class="nav-link">New Decision Problem</button>
 		</form>

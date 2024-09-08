@@ -11,14 +11,14 @@
 	@else
 
 	<li class="nav-item">
-		<form method="GET" action="/nodes">
+		<form method="GET" action="/home">
 			@csrf
 			<button style="border:none;background-color:transparent" type="submit" class="nav-link">My Decision Problems</button>
 		</form>
 	</li>
 	&nbsp;&nbsp;&nbsp;&nbsp;
 	<li>
-		<form method="POST" action="/formCreateNode/0">
+		<form method="POST" action="/formCreateProject">
 			@csrf
 			<button style="border:none;background-color:transparent" type="submit" class="nav-link">New Decision Problem</button>
 		</form>
@@ -55,16 +55,16 @@
                                     </tr>
                                     <tr>
                                         <th>Options</th>
-                                        @foreach($comparison['da2Options'] as $option)
+                                        @foreach($comparison['da1Options'] as $option)
                                             <th>{{ $option['label'] }}</th>
                                         @endforeach
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($comparison['da1Options'] as $optionIndex => $option)
+                                    @foreach($comparison['da2Options'] as $optionIndex => $option)
                                         <tr>
                                             @if ($loop->first)
-                                                <th rowspan="{{ count($comparison['da1Options']) }}" class="align-middle"><p>{{ $comparison['da2']->label }}</p></th>
+                                                <th rowspan="{{ count($comparison['da2Options']) }}" class="align-middle"><p>{{ $comparison['da2']->label }}</p></th>
                                             @endif
                                             <th scope="row">{{ $option['label'] }}</th>
                                             @foreach($comparison['da2Options'] as $optIndex => $opt)
